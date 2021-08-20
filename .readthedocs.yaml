@@ -17,4 +17,4 @@ formats:
 python:
    version: "3.7"
    install:
-   - requirements: sourece/requirements.txt
+   - requirements: source/requirements.txt
