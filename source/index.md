@@ -10,5 +10,6 @@
 :caption:cache
 
 cache
+superscalar
 ```
 
