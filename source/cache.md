@@ -30,6 +30,10 @@ Cache有三种主要的实现方式，直接映射、组相连和全相连。现
 
 在一般的RISC处理其中，I-Cache都是不会被直接写入内容的，即使有自修改(self-modifying)的情况发生，也并不是直接写I-Cache，而是要借助于D-Cache来实现，将要改写的指令作为数据写到D-Cache中，然后将D-Cache中的内容写到下级存储器中(例如L2 Cache，这个存储器一定是被指令和数据共享的，这个过程称为clean)，并将I-Cache中的所有内容置为无效，这样处理器再次执行时，就会使用到那些被修改的指令了。
 
+```{note}
+其实写通(Write Through)的方式只可能在L1 Cache和L2 Cache之间使用，因为L2 Cache的访问时间在一个可以接受的范围之内，而且这样可以降低Cache一致性的管理难度，但是更下层的存储器需要的访问时间越来越长，因此只有写回方式才是可以接受的方法。
+```
+
 ### Cache的替换
 
 1. LRU
@@ -60,6 +64,8 @@ Cache有三种主要的实现方式，直接映射、组相连和全相连。现
 
 		浪费硬件资源，但是简化了一致性管理。
 	* Exclusive: 如果L2 Cache和L1 Cache中内容互不相同，则称L2 Cache是Exclusive
+
+	Inclusive不代表L2 Cache和L1 Cache要数据一致，只需要指定地址的数据均存在于L1和L2即可
 4. Victim Cache
 
 	有时候，Cache中被“踢出”的数据可能马上又要使用，这是很有可能的。如果为此而增加Cache中way的个数，又会浪费掉大量的空间，因为其他的Cache set未必有这样的特征，Victim Cache可以保存最近被踢出Cache的数据，因此所有的Cache set都可以利用他来提高way的个数，通常Victim Cache采用全相连的方式，容量比较小(一般可以存储4～16个数据)。
